@@ -1,0 +1,88 @@
+format_version: "11"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+workflows:
+  local_test:
+    envs:
+    - LLVM_PROXY_TARGET_ADDR: grpc://localhost:6666
+    - APP_ID: 322a005426441b60
+    - ORG_ID: 14a2a1e2a526087e
+    steps:
+    - script@1:
+        title: Cleanup
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -e
+            rm -rf ./testApp
+            rm -rf ~/Library/Developer/Xcode/DerivedData/CompilationCache.noindex
+    - path::./:
+        inputs:
+        - verbose: 'true'
+    - script@1:
+        title: Print Environment Variables
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -e
+            echo "BITRISE_XCODE_COMPILATION_CACHE_ENABLED: $BITRISE_XCODE_COMPILATION_CACHE_ENABLED"
+            echo "BITRISE_XCODE_COMPILATION_CACHE_ARGUMENTS: $BITRISE_XCODE_COMPILATION_CACHE_ARGUMENTS"
+            echo "BITRISE_XCODE_ADDITIONAL_ARGS: $BITRISE_XCODE_ADDITIONAL_ARGS"
+            echo "BITRISE_XCODE_COMPILATION_CACHE_PROXY_PID: $BITRISE_XCODE_COMPILATION_CACHE_PROXY_PID"
+    - git::https://github.com/bitrise-steplib/bitrise-step-simple-git-clone.git:
+            inputs:
+            - repository_url: https://github.com/pointfreeco/swift-composable-architecture.git
+            - clone_into_dir: ./testApp
+            - branch: main
+    - change-workdir@1:
+        inputs:
+        - path: ./testApp/Examples/TicTacToe
+    - script@1:
+        title: Build
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -eo pipefail
+
+            xcodebuild clean \
+              -project "/Users/balazshajagos/dev/ios/bitrise-step-xcode-enable-compilation-cache/testApp/Examples/TicTacToe/TicTacToe.xcodeproj" \
+              -scheme "TicTacToe" \
+              -configuration "Debug" \
+              -destination "platform=iOS Simulator,name=iPhone 16" \
+              -skipMacroValidation \
+
+            xcodebuild build-for-testing \
+              -project "/Users/balazshajagos/dev/ios/bitrise-step-xcode-enable-compilation-cache/testApp/Examples/TicTacToe/TicTacToe.xcodeproj" \
+              -scheme "TicTacToe" \
+              -configuration "Debug" \
+              -destination "platform=iOS Simulator,name=iPhone 16" \
+              -skipMacroValidation \
+              SWIFT_ENABLE_EXPLICIT_MODULES=YES \
+              COMPILATION_CACHE_ENABLE_CACHING=YES \
+              SWIFT_ENABLE_COMPILE_CACHE=1 \
+              COMPILATION_CACHE_REMOTE_SERVICE_PATH=/tmp/llvmproxy.sock \
+              COMPILATION_CACHE_ENABLE_PLUGIN=1
+    - script@1:
+        title: Kill proxy
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -e
+            kill $BITRISE_XCODE_COMPILATION_CACHE_PROXY_PID
+
+  check:
+    steps:
+    - git::https://github.com/bitrise-steplib/steps-check.git: { }
+
+  e2e:
+    steps:
+    - git::https://github.com/bitrise-steplib/steps-check.git:
+        inputs:
+        - workflow: e2e
+
+  generate_readme:
+    steps:
+    - git::https://github.com/bitrise-steplib/steps-readme-generator.git@main:
+        inputs:
+        - example_section: docs/examples.md
+        - contrib_section: docs/contributing.md

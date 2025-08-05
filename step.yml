@@ -1,0 +1,51 @@
+title: Enable Xcode Compilation Cache
+summary: TBD
+description: |
+  TBD
+
+website: https://github.com/bitrise-steplib/bitrise-step-xcode-enable-compilation-cache
+source_code_url: https://github.com/bitrise-steplib/bitrise-step-xcode-enable-compilation-cache
+support_url: https://github.com/bitrise-steplib/bitrise-step-xcode-enable-compilation-cache/issues
+
+type_tags:
+- utility
+
+run_if: true
+is_skippable: true
+
+deps:
+  brew:
+  - name: zstd
+  apt_get:
+  - name: zstd
+
+toolkit:
+  go:
+    package_name: github.com/bitrise-steplib/bitrise-step-xcode-enable-compilation-cache
+
+inputs:
+- verbose: "false"
+  opts:
+    title: Verbose logging
+    summary: Enable logging additional information for troubleshooting.
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
+
+outputs:
+- BITRISE_XCODE_COMPILATION_CACHE_ENABLED:
+  opts:
+    title: Xcode Compilation Cache Enabled
+    description: |-
+      Indicates whether the Xcode compilation cache is enabled. This is set to `true` if the cache is enabled, otherwise `false`.
+- BITRISE_XCODE_COMPILATION_CACHE_ARGS:
+  opts:
+    title: Xcode Compilation Cache Arguments
+    description: |-
+      Additional arguments to pass to xcodebuild for controlling the compilation cache behavior.
+- BITRISE_XCODE_ADDITIONAL_ARGS:
+  opts:
+    title: Additional Xcode Arguments
+    description: |-
+      Additional arguments to pass to xcodebuild. If the same environment variable is set before running this step, it will be extended with the compilation cache arguments.
