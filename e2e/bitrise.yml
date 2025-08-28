@@ -3,8 +3,8 @@ default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 
 app:
   envs:
-    - TEST_APP_URL: git@github.com:bitrise-io/swift-composable-architecture.git
-    - COMMIT: 27db3dfc9f55c206e09ca2a51b93bd600a56429e
+  - TEST_APP_URL: git@github.com:bitrise-io/swift-composable-architecture.git
+  - COMMIT: 27db3dfc9f55c206e09ca2a51b93bd600a56429e
 
 workflows:
   test_xcc:
@@ -27,16 +27,16 @@ workflows:
     - script:
         title: build app
         inputs:
-          - content: |-
-              #!/usr/bin/env bash
-              set -eo pipefail
+        - content: |-
+            #!/usr/bin/env bash
+            set -eo pipefail
 
-              echo "Starting build..."
-              xcodebuild build \
-                -workspace ComposableArchitecture.xcworkspace \
-                -scheme ComposableArchitecture \
-                -destination "generic/platform=iOS" \
-                -skipMacroValidation 2> wrapper.log | tee xcodebuild.log | xcpretty
+            echo "Starting build..."
+            xcodebuild build \
+              -workspace ComposableArchitecture.xcworkspace \
+              -scheme ComposableArchitecture \
+              -destination "generic/platform=iOS" \
+              -skipMacroValidation 2> wrapper.log | tee xcodebuild.log | xcpretty
 
   _check:
     steps:
@@ -46,10 +46,10 @@ workflows:
         - content: |-
             #!/bin/bash
             set -ex
-            
+
             # We need Xcode beta stack for checkign the cache and the current CI setup dos not suppor that. The CLI has comprehensive tests for this.
             # Let's just check that the invocation is saved.
-            
+
             if grep -q "Invocation saved" wrapper.log; then
               echo "xcodebuild invocation found in log"
             else
