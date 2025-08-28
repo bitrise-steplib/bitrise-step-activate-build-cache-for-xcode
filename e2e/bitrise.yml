@@ -31,6 +31,11 @@ workflows:
             #!/usr/bin/env bash
             set -eo pipefail
 
+            if [ $(uname -s) != "Darwin" ]; then
+              echo "This workflow only works on macOS stack!"
+              exit 0
+            fi
+
             echo "Starting build..."
             xcodebuild build \
               -workspace ComposableArchitecture.xcworkspace \
@@ -46,6 +51,11 @@ workflows:
         - content: |-
             #!/bin/bash
             set -ex
+
+            if [ $(uname -s) != "Darwin" ]; then
+              echo "This workflow only works on macOS stack!"
+              exit 0
+            fi
 
             # We need Xcode beta stack for checkign the cache and the current CI setup dos not suppor that. The CLI has comprehensive tests for this.
             # Let's just check that the invocation is saved.
