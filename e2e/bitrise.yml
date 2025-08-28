@@ -52,15 +52,15 @@ workflows:
         - content: |-
             set -exo pipefail
 
-            cp ~/.bitrise-xcelerate/config.json $BITRISE_DEPLOY_DIR
-            cp ~/.bitrise-xcelerate/proxy.err.log $BITRISE_DEPLOY_DIR
-            cp ~/.bitrise-xcelerate/proxy.out.log $BITRISE_DEPLOY_DIR
-            cp xcodebuild.log $BITRISE_DEPLOY_DIR
-            cp wrapper.log $BITRISE_DEPLOY_DIR
+            cp ~/.bitrise-xcelerate/config.json $BITRISE_DEPLOY_DIR || true
+            cp ~/.bitrise-xcelerate/proxy.err.log $BITRISE_DEPLOY_DIR || true
+            cp ~/.bitrise-xcelerate/proxy.out.log $BITRISE_DEPLOY_DIR || true
+            cp xcodebuild.log $BITRISE_DEPLOY_DIR || true
+            cp wrapper.log $BITRISE_DEPLOY_DIR || true
 
-            cat "$BITRISE_DEPLOY_DIR/wrapper.log"
-            head -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log
-            tail -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log
+            cat "$BITRISE_DEPLOY_DIR/wrapper.log" || true
+            head -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log || true
+            tail -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log || true
     - deploy-to-bitrise-io: { }
     - script:
         title: Check if the step is working
