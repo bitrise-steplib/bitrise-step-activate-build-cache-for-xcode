@@ -47,6 +47,7 @@ workflows:
     steps:
     - script:
         title: gather info
+        is_always_run: true
         inputs:
         - content: |-
             set -exo pipefail
