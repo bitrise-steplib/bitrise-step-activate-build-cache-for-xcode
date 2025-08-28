@@ -1,0 +1,70 @@
+format_version: "11"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+app:
+  envs:
+    - TEST_APP_URL: git@github.com:bitrise-io/swift-composable-architecture.git
+    - COMMIT: 27db3dfc9f55c206e09ca2a51b93bd600a56429e
+
+workflows:
+  test_xcc:
+    after_run:
+    - _setup
+    - _run
+    - _check
+  _run:
+    steps:
+    - path::./:
+        title: Execute step
+        run_if: "true"
+        is_skippable: false
+        inputs:
+        - verbose: "true"
+    - change-workdir:
+        title: Switch working dir to _tmp
+        inputs:
+        - path: ./_tmp
+    - script:
+        title: build app
+        inputs:
+          - content: |-
+              #!/usr/bin/env bash
+              set -eo pipefail
+
+              echo "Starting build..."
+              xcodebuild build \
+                -workspace ComposableArchitecture.xcworkspace \
+                -scheme ComposableArchitecture \
+                -destination "generic/platform=iOS" \
+                -skipMacroValidation 2> wrapper.log | tee xcodebuild.log | xcpretty
+
+  _check:
+    steps:
+    - script:
+        title: Check if the step is working
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            
+            # We need Xcode beta stack for checkign the cache and the current CI setup dos not suppor that. The CLI has comprehensive tests for this.
+            # Let's just check that the invocation is saved.
+            
+            if grep -q "Invocation saved" wrapper.log; then
+              echo "xcodebuild invocation found in log"
+            else
+              echo "xcodebuild invocation NOT found in log"
+              exit 1
+            fi
+
+  _setup:
+    steps:
+    - script:
+        title: Delete _tmp dir
+        inputs:
+        - content: rm -rf _tmp
+    - git::https://github.com/bitrise-steplib/bitrise-step-simple-git-clone.git:
+        inputs:
+        - repository_url: $TEST_APP_URL
+        - clone_into_dir: ./_tmp
+        - branch: $BRANCH
