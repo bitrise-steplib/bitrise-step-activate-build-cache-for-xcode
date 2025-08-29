@@ -36,6 +36,9 @@ workflows:
               exit 0
             fi
 
+            echo "xcodebuild location with which: $(which xcodebuild)"
+            echo "xcodebuild location with type: $(type xcodebuild)"
+
             echo "Starting build..."
             xcodebuild build -destination 'generic/platform=iOS' \
             -scheme DeckOfPlayingCards \
