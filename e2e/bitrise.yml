@@ -36,6 +36,7 @@ workflows:
               exit 0
             fi
 
+            rbenv install 3.2.2 || true
             make dependencies
 
             echo "Starting build..."
