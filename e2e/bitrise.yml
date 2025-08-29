@@ -42,7 +42,7 @@ workflows:
             echo "Starting build..."
             xcodebuild build -destination 'generic/platform=iOS' \
             -scheme Signal -workspace Signal.xcworkspace \
-            CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -showBuildTimingSummary 2> wrapper.log | tee xcodebuild.log | xcpretty
+            CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -showBuildTimingSummary 2> wrapper.log | tee xcodebuild.log
 
   _check:
     steps:
