@@ -63,5 +63,6 @@ if [ "$verbose" != "true" ] && [ "$verbose" != "false" ]; then
   echo "Parsing inputs failed: Verbose logging ($verbose) is not a valid option."
 fi
 
+mv /tmp/bin/bitrise-build-cache /tmp/bin/bitrise-build-cache-cli
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose"
+/tmp/bin/bitrise-build-cache-cli activate xcode --debug="$verbose"
