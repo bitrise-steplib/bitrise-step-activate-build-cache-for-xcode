@@ -1,0 +1,100 @@
+format_version: "11"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+app:
+  envs:
+  - TEST_APP_URL: https://github.com/bitrise-io/swift-package-deckofplayingcards
+  - BRANCH: main
+
+workflows:
+  test_xcc:
+    after_run:
+    - _setup
+    - _run
+    - _check
+  _run:
+    steps:
+    - path::./:
+        title: Execute step
+        run_if: "true"
+        is_skippable: false
+        inputs:
+        - verbose: "true"
+    - change-workdir:
+        title: Switch working dir to _tmp
+        inputs:
+        - path: ./_tmp
+    - script:
+        title: build app
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -eo pipefail
+
+            if [ $(uname -s) != "Darwin" ]; then
+              echo "This workflow only works on macOS stack!"
+              exit 0
+            fi
+
+            echo "xcodebuild location with which: $(which xcodebuild)"
+            echo "xcodebuild location with type: $(type xcodebuild)"
+
+            ls -hal ~/.bitrise-xcelerate/bin/
+
+            echo "Starting build..."
+            xcodebuild build -destination 'generic/platform=iOS' \
+            -scheme DeckOfPlayingCards \
+            CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -showBuildTimingSummary 2> wrapper.log > xcodebuild.log
+
+  _check:
+    steps:
+    - script:
+        title: gather info
+        is_always_run: true
+        inputs:
+        - content: |-
+            set -exo pipefail
+
+            cp ~/.bitrise-xcelerate/config.json $BITRISE_DEPLOY_DIR || true
+            cp ~/.bitrise-xcelerate/proxy.err.log $BITRISE_DEPLOY_DIR || true
+            cp ~/.bitrise-xcelerate/proxy.out.log $BITRISE_DEPLOY_DIR || true
+            cp xcodebuild.log $BITRISE_DEPLOY_DIR || true
+            cp wrapper.log $BITRISE_DEPLOY_DIR || true
+
+            cat "$BITRISE_DEPLOY_DIR/wrapper.log" || true
+            head -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log || true
+            tail -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log || true
+    - deploy-to-bitrise-io: { }
+    - script:
+        title: Check if the step is working
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+
+            if [ $(uname -s) != "Darwin" ]; then
+              echo "This workflow only works on macOS stack!"
+              exit 0
+            fi
+
+            # We need Xcode beta stack for checkign the cache and the current CI setup dos not suppor that. The CLI has comprehensive tests for this.
+            # Let's just check that the invocation is saved.
+
+            if grep -q "Invocation saved" wrapper.log; then
+              echo "xcodebuild invocation found in log"
+            else
+              echo "xcodebuild invocation NOT found in log"
+              exit 1
+            fi
+
+  _setup:
+    steps:
+    - script:
+        title: Delete _tmp dir
+        inputs:
+        - content: rm -rf _tmp
+    - git::https://github.com/bitrise-steplib/bitrise-step-simple-git-clone.git:
+        inputs:
+        - repository_url: $TEST_APP_URL
+        - clone_into_dir: ./_tmp
+        - branch: $BRANCH
