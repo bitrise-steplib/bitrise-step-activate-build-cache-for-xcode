@@ -42,6 +42,8 @@ workflows:
             echo "xcodebuild location with which: $(which xcodebuild)"
             echo "xcodebuild location with type: $(type xcodebuild)"
 
+            ls -hal ~/.bitrise-xcelerate/bin/
+
             echo "Starting build..."
             xcodebuild build -destination 'generic/platform=iOS' \
             -scheme DeckOfPlayingCards \
