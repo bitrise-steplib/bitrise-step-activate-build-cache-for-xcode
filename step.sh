@@ -27,8 +27,6 @@ if [ "$BITRISEIO_BUILD_CACHE_ENABLED" != "true" ]; then
 fi
 echo "Bitrise Build Cache is activated in this workspace, configuring the build environment ..."
 
-set -x
-
 # download the Bitrise Build Cache CLI
 export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.0"
 curl --retry 5 -m 30 -sSfL 'https://raw.githubusercontent.com/bitrise-io/bitrise-build-cache-cli/main/install/installer.sh' | sh -s -- -b /tmp/bin -d $BITRISE_BUILD_CACHE_CLI_VERSION || true
@@ -64,7 +62,4 @@ if [ "$verbose" != "true" ] && [ "$verbose" != "false" ]; then
 fi
 
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose"
-
-source ~/.bashrc
-envman add --key PATH --value "$PATH"
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache

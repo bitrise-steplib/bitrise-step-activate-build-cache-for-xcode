@@ -29,7 +29,7 @@ workflows:
         inputs:
         - content: |-
             #!/usr/bin/env bash
-            set -exo pipefail
+            set -eo pipefail
 
             if [ $(uname -s) != "Darwin" ]; then
               echo "This workflow only works on macOS stack!"
