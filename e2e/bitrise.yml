@@ -36,6 +36,8 @@ workflows:
               exit 0
             fi
 
+            make dependencies
+
             echo "Starting build..."
             xcodebuild build -destination 'generic/platform=iOS' \
             -scheme Signal -workspace Signal.xcworkspace \
