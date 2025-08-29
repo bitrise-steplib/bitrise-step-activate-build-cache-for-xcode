@@ -66,4 +66,4 @@ fi
 # run the Bitrise Build Cache CLI
 /tmp/bin/bitrise-build-cache activate xcode --debug="$verbose"
 
-source "~/.bashrc"
+source ~/.bashrc
