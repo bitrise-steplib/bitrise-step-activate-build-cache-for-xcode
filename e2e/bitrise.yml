@@ -30,14 +30,11 @@ workflows:
         - content: |-
             #!/usr/bin/env bash
             set -exo pipefail
-            shopt -s expand_aliases
 
             if [ $(uname -s) != "Darwin" ]; then
               echo "This workflow only works on macOS stack!"
               exit 0
             fi
-
-            alias xcodebuild='~/.bitrise-xcelerate/bin/bitrise-build-cache-cli xcelerate xcodebuild'
 
             echo "xcodebuild location with which: $(which xcodebuild)"
             echo "xcodebuild location with type: $(type xcodebuild)"
