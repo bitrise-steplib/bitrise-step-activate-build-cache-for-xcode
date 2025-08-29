@@ -36,6 +36,8 @@ workflows:
               exit 0
             fi
 
+            alias xcodebuild='~/.bitrise-xcelerate/bin/bitrise-build-cache-cli xcelerate xcodebuild'
+
             echo "xcodebuild location with which: $(which xcodebuild)"
             echo "xcodebuild location with type: $(type xcodebuild)"
 
