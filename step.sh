@@ -28,7 +28,7 @@ fi
 echo "Bitrise Build Cache is activated in this workspace, configuring the build environment ..."
 
 # download the Bitrise Build Cache CLI
-export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.0-rc1"
+export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.0-rc2"
 curl --retry 5 -m 30 -sSfL 'https://raw.githubusercontent.com/bitrise-io/bitrise-build-cache-cli/main/install/installer.sh' | sh -s -- -b /tmp/bin -d $BITRISE_BUILD_CACHE_CLI_VERSION || true
 
 # Fall back to Artifact Registry if the download failed
@@ -61,5 +61,9 @@ if [ "$verbose" != "true" ] && [ "$verbose" != "false" ]; then
   echo "Parsing inputs failed: Verbose logging ($verbose) is not a valid option."
 fi
 
+if [ "$push" != "true" ] && [ "$push" != "false" ]; then
+  echo "Parsing inputs failed: Push new cache entries ($push) is not a valid option."
+fi
+
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache --cache-push="$push"

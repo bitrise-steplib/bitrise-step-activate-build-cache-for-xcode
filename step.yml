@@ -30,3 +30,11 @@ inputs:
     value_options:
     - "true"
     - "false"
+- push: "true"
+  opts:
+    title: Push new cache entries
+    summary: Whether the build can not only read, but write new entries to the remote cache
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
