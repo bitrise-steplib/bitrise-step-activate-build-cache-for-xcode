@@ -30,6 +30,14 @@ inputs:
     value_options:
     - "true"
     - "false"
+- cache: "true"
+  opts:
+    title: Use cache
+    summary: Whether the build uses the remote cache
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
 - push: "true"
   opts:
     title: Push new cache entries

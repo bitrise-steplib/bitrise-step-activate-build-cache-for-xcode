@@ -61,9 +61,13 @@ if [ "$verbose" != "true" ] && [ "$verbose" != "false" ]; then
   echo "Parsing inputs failed: Verbose logging ($verbose) is not a valid option."
 fi
 
+if [ "$cache" != "true" ] && [ "$cache" != "false" ]; then
+  echo "Parsing inputs failed: Use cache ($cache) is not a valid option."
+fi
+
 if [ "$push" != "true" ] && [ "$push" != "false" ]; then
   echo "Parsing inputs failed: Push new cache entries ($push) is not a valid option."
 fi
 
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache --cache-push="$push"
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-push="$push"
