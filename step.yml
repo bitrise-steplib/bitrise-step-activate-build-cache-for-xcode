@@ -46,3 +46,13 @@ inputs:
     value_options:
     - "true"
     - "false"
+- silent: "false"
+  opts:
+    title: Silence all extra Bitrise logging
+    summary: |-
+      Whether Bitrise components should not log anything except the underlying xcodebuild output.
+      Takes precedence over the Verbose logging option.
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
