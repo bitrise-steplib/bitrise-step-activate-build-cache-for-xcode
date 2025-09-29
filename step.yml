@@ -61,8 +61,8 @@ inputs:
     title: Add timestamps to xcodebuild messages
     is_required: true
     value_options:
-      - "true"
-      - "false"
+    - "true"
+    - "false"
     summary: Add timestamps to xcodebuild messages
     description: |-
       When enabled, the analytics wrapper adds timestamps to xcodebuild output log messages during the build.
