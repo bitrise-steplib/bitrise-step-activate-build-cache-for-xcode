@@ -28,7 +28,7 @@ fi
 echo "Bitrise Build Cache is activated in this workspace, configuring the build environment ..."
 
 # download the Bitrise Build Cache CLI
-export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.2"
+export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.3"
 curl --retry 5 -m 30 -sSfL 'https://raw.githubusercontent.com/bitrise-io/bitrise-build-cache-cli/main/install/installer.sh' | sh -s -- -b /tmp/bin -d $BITRISE_BUILD_CACHE_CLI_VERSION || true
 
 # Fall back to Artifact Registry if the download failed
@@ -73,5 +73,9 @@ if [ "$silent" != "true" ] && [ "$silent" != "false" ]; then
   echo "Parsing inputs failed: Silent ($silent) is not a valid option."
 fi
 
+if [ "$timestamps" != "true" ] && [ "$timestamps" != "false" ]; then
+  echo "Parsing inputs failed: Timestamps ($timestamps) is not a valid option."
+fi
+
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-push="$push" --silent="$silent"
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-push="$push" --silent="$silent" --timestamps="$timestamps"

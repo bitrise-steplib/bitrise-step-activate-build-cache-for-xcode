@@ -51,8 +51,18 @@ inputs:
     title: Silence all extra Bitrise logging
     summary: |-
       Whether Bitrise components should not log anything except the underlying xcodebuild output.
-      Takes precedence over the Verbose logging option.
+      Takes precedence over the 'Verbose logging' and 'Add timestamps' options.
     is_required: true
     value_options:
     - "true"
     - "false"
+- timestamps: "false"
+  opts:
+    title: Add timestamps to xcodebuild messages
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
+    summary: Add timestamps to xcodebuild messages
+    description: |-
+      When enabled, the analytics wrapper adds timestamps to xcodebuild output log messages during the build.
