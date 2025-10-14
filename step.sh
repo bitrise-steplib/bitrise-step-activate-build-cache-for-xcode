@@ -28,7 +28,7 @@ fi
 echo "Bitrise Build Cache is activated in this workspace, configuring the build environment ..."
 
 # download the Bitrise Build Cache CLI
-export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.3"
+export BITRISE_BUILD_CACHE_CLI_VERSION="v1.0.5"
 curl --retry 5 -m 30 -sSfL 'https://raw.githubusercontent.com/bitrise-io/bitrise-build-cache-cli/main/install/installer.sh' | sh -s -- -b /tmp/bin -d $BITRISE_BUILD_CACHE_CLI_VERSION || true
 
 # Fall back to Artifact Registry if the download failed
