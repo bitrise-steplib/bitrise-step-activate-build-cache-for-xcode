@@ -98,3 +98,26 @@ workflows:
         - repository_url: $TEST_APP_URL
         - clone_into_dir: ./_tmp
         - branch: $BRANCH
+    - script:
+        title: check simulator version
+        run_if: "{{enveq \"BITRISEIO_STACK_ID\" \"osx-xcode-edge\"}}"
+        inputs:
+        - content: |-
+            #!/bin/bash
+            set -ex
+            
+            MAX_ITERATIONS=50
+            SLEEP_TIME=1
+            IOS_SIMULATOR_VERSION="26.1"
+            
+            for i in $(seq 1 $MAX_ITERATIONS); do
+                echo "Attempt $i of $MAX_ITERATIONS..."
+                OUTPUT=$(xcrun simctl list runtimes 2>&1)
+                if echo "$OUTPUT" | grep -q "iOS $IOS_SIMULATOR_VERSION"; then
+                    echo "✅ Found 'iOS $IOS_SIMULATOR_VERSION' in runtimes. Exiting loop."
+                    exit 0
+                else
+                    echo "⚠️  Warning: 'iOS $IOS_SIMULATOR_VERSION' not found. Retrying in $SLEEP_TIME second(s)..."
+                    sleep $SLEEP_TIME
+                fi
+            done
