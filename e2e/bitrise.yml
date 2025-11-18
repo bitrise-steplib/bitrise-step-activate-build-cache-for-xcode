@@ -64,7 +64,8 @@ workflows:
             cat "$BITRISE_DEPLOY_DIR/wrapper.log" || true
             head -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log || true
             tail -n 20 $BITRISE_DEPLOY_DIR/xcodebuild.log || true
-    - deploy-to-bitrise-io: { }
+    - deploy-to-bitrise-io:
+        is_skippable: true
     - script:
         title: Check if the step is working
         inputs:
