@@ -105,11 +105,11 @@ workflows:
         - content: |-
             #!/bin/bash
             set -ex
-            
+
             MAX_ITERATIONS=50
             SLEEP_TIME=1
             IOS_SIMULATOR_VERSION="26.1"
-            
+
             for i in $(seq 1 $MAX_ITERATIONS); do
                 echo "Attempt $i of $MAX_ITERATIONS..."
                 OUTPUT=$(xcrun simctl list runtimes 2>&1)
