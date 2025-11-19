@@ -34,6 +34,7 @@ You can also run this step directly with [Bitrise CLI](https://github.com/bitris
 | `push` | Whether the build can not only read, but write new entries to the remote cache | required | `true` |
 | `silent` | Whether Bitrise components should not log anything except the underlying xcodebuild output. Takes precedence over the 'Verbose logging' and 'Add timestamps' options. | required | `false` |
 | `timestamps` | When enabled, the analytics wrapper adds timestamps to xcodebuild output log messages during the build. | required | `false` |
+| `cache_skip_flags` | Skip passing cache flags to xcodebuild except the COMPILATION_CACHE_REMOTE_SERVICE_PATH.  Cache will have to be enabled manually in the Xcode project settings. More information can be found at the FAQ document: https://docs.bitrise.io/en/bitrise-build-cache/build-cache-for-xcode/xcode-compilation-cache-faq.html | required | `false` |
 </details>
 
 <details>
