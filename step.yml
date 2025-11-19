@@ -66,3 +66,16 @@ inputs:
     summary: Add timestamps to xcodebuild messages
     description: |-
       When enabled, the analytics wrapper adds timestamps to xcodebuild output log messages during the build.
+- cache_skip_flags: "false"
+  opts:
+    title: Skip passing cache flags to xcodebuild
+    is_required: true
+    value_options:
+      - "true"
+      - "false"
+    summary: Skip passing cache flags to xcodebuild
+    description: |-
+      Skip passing cache flags to xcodebuild except the COMPILATION_CACHE_REMOTE_SERVICE_PATH.
+
+      Cache will have to be enabled manually in the Xcode project settings. More information can be found at the FAQ
+      document: https://docs.bitrise.io/en/bitrise-build-cache/build-cache-for-xcode/xcode-compilation-cache-faq.html

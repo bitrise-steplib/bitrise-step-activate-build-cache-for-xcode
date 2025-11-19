@@ -77,5 +77,9 @@ if [ "$timestamps" != "true" ] && [ "$timestamps" != "false" ]; then
   echo "Parsing inputs failed: Timestamps ($timestamps) is not a valid option."
 fi
 
+if [ "$cache_skip_flags" == "true" ] && [ "$cache_skip_flags" != "false" ]; then
+  echo "Parsing inputs failed: cache_skip_flags ($cache_skip_flags) is not a valid option."
+fi
+
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-push="$push" --silent="$silent" --timestamps="$timestamps"
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-skip-flags="$cache_skip_flags" --cache-push="$push" --silent="$silent" --timestamps="$timestamps"
