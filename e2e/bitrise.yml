@@ -42,9 +42,32 @@ workflows:
             ls -hal ~/.bitrise-xcelerate/bin/
 
             echo "Starting build..."
-            xcodebuild build -destination 'generic/platform=iOS' \
-            -scheme DeckOfPlayingCards \
-            CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -showBuildTimingSummary 2> wrapper.log > xcodebuild.log
+
+            MAX_RETRIES=20
+            SLEEP_BETWEEN=30
+            RETRY=0
+            while [ $RETRY -lt $MAX_RETRIES ]; do
+              if xcodebuild build -destination 'generic/platform=iOS' \
+                -scheme DeckOfPlayingCards \
+                CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -showBuildTimingSummary 2> wrapper.log > xcodebuild.log; then
+                echo "Build succeeded."
+                break
+              else
+                if grep -q 'is not installed' wrapper.log; then
+                  echo "iOS runtime not installed, sleeping $SLEEP_BETWEEN seconds and retrying ($((RETRY+1))/$MAX_RETRIES)..."
+                  sleep $SLEEP_BETWEEN
+                  RETRY=$((RETRY+1))
+                else
+                  echo "Build failed for another reason. See wrapper.log."
+                  exit 1
+                fi
+              fi
+            done
+            if [ $RETRY -eq $MAX_RETRIES ]; then
+              echo "Build failed after $MAX_RETRIES retries due to missing iOS runtime."
+              cat wrapper.log
+              exit 1
+            fi
 
   _check:
     steps:
