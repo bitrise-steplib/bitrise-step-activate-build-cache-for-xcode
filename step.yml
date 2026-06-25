@@ -79,3 +79,15 @@ inputs:
 
       Cache will have to be enabled manually in the Xcode project settings. More information can be found at the FAQ
       document: https://docs.bitrise.io/en/bitrise-build-cache/build-cache-for-xcode/xcode-compilation-cache-faq.html
+- disable_prefix_mapping: "false"
+  opts:
+    title: Disable Clang prefix mapping
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
+    summary: Disable injecting Clang prefix-mapping flags into xcodebuild
+    description: |-
+      Disable injecting Clang prefix-mapping flags into xcodebuild.
+
+      Prefix mapping canonicalizes rotating source/DerivedData paths so the compilation cache keys stay stable across builds (e.g. when source is checked out into a per-build temp dir). Disable only if it causes issues.
