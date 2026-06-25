@@ -28,7 +28,7 @@ fi
 echo "Bitrise Build Cache is activated in this workspace, configuring the build environment ..."
 
 # download the Bitrise Build Cache CLI
-export BITRISE_BUILD_CACHE_CLI_VERSION="v2.8.6"
+export BITRISE_BUILD_CACHE_CLI_VERSION="v2.8.8"
 curl --retry 5 -m 30 -sSfL 'https://raw.githubusercontent.com/bitrise-io/bitrise-build-cache-cli/main/install/installer.sh' | sh -s -- -b /tmp/bin -d $BITRISE_BUILD_CACHE_CLI_VERSION || true
 
 # Fall back to Artifact Registry if the download failed
@@ -81,5 +81,9 @@ if [ "$cache_skip_flags" != "true" ] && [ "$cache_skip_flags" != "false" ]; then
   echo "Parsing inputs failed: cache_skip_flags ($cache_skip_flags) is not a valid option."
 fi
 
+if [ "$disable_prefix_mapping" != "true" ] && [ "$disable_prefix_mapping" != "false" ]; then
+  echo "Parsing inputs failed: disable_prefix_mapping ($disable_prefix_mapping) is not a valid option."
+fi
+
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-skip-flags="$cache_skip_flags" --cache-push="$push" --silent="$silent" --timestamps="$timestamps"
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-skip-flags="$cache_skip_flags" --cache-push="$push" --silent="$silent" --timestamps="$timestamps" --disable-prefix-mapping="$disable_prefix_mapping"
