@@ -79,6 +79,18 @@ inputs:
 
       Cache will have to be enabled manually in the Xcode project settings. More information can be found at the FAQ
       document: https://docs.bitrise.io/en/bitrise-build-cache/build-cache-for-xcode/xcode-compilation-cache-faq.html
+- no_swift_cache: "false"
+  opts:
+    title: Cache clang/Objective-C only, leaving Swift uncached
+    is_required: true
+    value_options:
+    - "true"
+    - "false"
+    summary: Cache clang/Objective-C compilation only, leaving Swift uncached
+    description: |-
+      Cache clang/Objective-C compilation only, leaving Swift uncached.
+
+      Swift compile caching requires Swift explicit modules, and some projects cannot build under them — the build then fails with `unable to resolve module dependency` even when the cache is fully warm. Enable this to keep caching the clang/Objective-C/C++ side of such a project instead of turning the cache off entirely.
 - disable_prefix_mapping: "false"
   opts:
     title: Disable Clang prefix mapping

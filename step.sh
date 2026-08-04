@@ -85,5 +85,9 @@ if [ "$disable_prefix_mapping" != "true" ] && [ "$disable_prefix_mapping" != "fa
   echo "Parsing inputs failed: disable_prefix_mapping ($disable_prefix_mapping) is not a valid option."
 fi
 
+if [ "$no_swift_cache" != "true" ] && [ "$no_swift_cache" != "false" ]; then
+  echo "Parsing inputs failed: no_swift_cache ($no_swift_cache) is not a valid option."
+fi
+
 # run the Bitrise Build Cache CLI
-/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-skip-flags="$cache_skip_flags" --cache-push="$push" --silent="$silent" --timestamps="$timestamps" --disable-prefix-mapping="$disable_prefix_mapping"
+/tmp/bin/bitrise-build-cache activate xcode --debug="$verbose" --cache="$cache" --cache-skip-flags="$cache_skip_flags" --cache-push="$push" --silent="$silent" --timestamps="$timestamps" --disable-prefix-mapping="$disable_prefix_mapping" --no-swift-cache="$no_swift_cache"
