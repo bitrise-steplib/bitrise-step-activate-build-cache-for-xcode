@@ -14,6 +14,16 @@ EOF_MSG
 
 set -eo pipefail
 
+echo "============================================================"
+echo "DEPRECATION NOTICE"
+echo "The 0.x line of this Step is deprecated and will stop receiving"
+echo "Bitrise Build Cache CLI updates. Re-pin your workflow to @1:"
+echo ""
+echo "    - activate-build-cache-for-xcode@1: {}"
+echo ""
+echo "The 1.x line is functionally identical; only the major changed."
+echo "============================================================"
+
 echo "Checking whether Bitrise Build Cache is activated for this workspace ..."
 if [ "$BITRISEIO_BUILD_CACHE_ENABLED" != "true" ]; then
   printf "\n%s\n" "$UNAVAILABLE_MESSAGE"
