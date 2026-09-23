@@ -1,5 +1,5 @@
 title: Build Cache for Xcode
-summary: Activates Bitrise Remote Build Cache add-on for subsequent Xcode builds in the workflow
+summary: "[DEPRECATED — use @1] Activates Bitrise Remote Build Cache add-on for subsequent Xcode builds in the workflow"
 description: |
   **⚠️ DEPRECATED — this is the 0.x line of the Step.**
 
