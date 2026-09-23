@@ -1,6 +1,16 @@
 title: Build Cache for Xcode
 summary: Activates Bitrise Remote Build Cache add-on for subsequent Xcode builds in the workflow
 description: |
+  **⚠️ DEPRECATED — this is the 0.x line of the Step.**
+
+  The 0.x line will stop receiving Bitrise Build Cache CLI updates. Re-pin your workflow to `@1`:
+
+  ```yaml
+  - activate-build-cache-for-xcode@1: {}
+  ```
+
+  The 1.x line is functionally identical; only the major version changed.
+
   This Step enables Bitrise's Build Cache Add‑On for Xcode by configuring the environment with the Build Cache CLI.
 
   After this Step runs, Xcode builds invoked via xcodebuild in subsequent workflow steps will automatically read from the remote cache and push new entries when applicable.
